@@ -27,11 +27,11 @@
     },
   ];
 
-  fetch(new URL('data.json', document.baseURI), { cache: 'no-store' })
+  Promise.resolve(window.weddingData || fetch(new URL('data.json', document.baseURI), { cache: 'no-store' })
     .then(response => {
       if (!response.ok) throw new Error(`Invitation data request failed: ${response.status}`);
       return response.json();
-    })
+    }))
     .then(data => {
       const images = data.images || {};
       const updateImages = () => {
@@ -39,7 +39,7 @@
           const path = images[slot.setting];
           if (!path || path.startsWith('[')) continue;
 
-          const candidates = [...document.querySelectorAll('img._7_i_XA')]
+          const candidates = [...document.querySelectorAll('img')]
             .filter(candidate => !candidate.dataset.configuredImage);
           let image = candidates.find(candidate =>
             (candidate.currentSrc.includes(slot.source) || candidate.src.includes(slot.source))
@@ -51,6 +51,22 @@
           image.alt = slot.alt;
           image.removeAttribute('srcset');
           image.src = new URL(path.replace(/^\//, ''), document.baseURI).href;
+          if (slot.setting === 'location') {
+            const mapUrl = data.wedding?.ceremony?.mapsUrl || data.wedding?.mapsUrl;
+            image.style.cursor = 'pointer';
+            image.setAttribute('role', 'link');
+            image.setAttribute('tabindex', '0');
+            image.setAttribute('aria-label', `Open map for ${data.wedding?.ceremony?.venue || 'the wedding venue'}`);
+            const openMap = event => {
+              event.preventDefault();
+              event.stopPropagation();
+              if (mapUrl) window.open(mapUrl, '_blank', 'noopener,noreferrer');
+            };
+            image.addEventListener('click', openMap);
+            image.addEventListener('keydown', event => {
+              if (event.key === 'Enter' || event.key === ' ') openMap(event);
+            });
+          }
         }
       };
 
