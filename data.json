@@ -68,11 +68,10 @@
     "separateEventRSVP": true,
     "events": [
       {
-        "id": "wedding-reception",
-        "title": "Wedding",
+        "id": "akad-nikah",
+        "title": "Akad Nikah",
         "date": "2026-12-12",
-        "time": "19:00",
-        "timeTentative": true
+        "time": "08:00"
       }
     ],
     "guestFullNameRequired": true,

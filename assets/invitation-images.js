@@ -60,9 +60,10 @@
             const openMap = event => {
               event.preventDefault();
               event.stopPropagation();
+              event.stopImmediatePropagation();
               if (mapUrl) window.open(mapUrl, '_blank', 'noopener,noreferrer');
             };
-            image.addEventListener('click', openMap);
+            image.addEventListener('click', openMap, true);
             image.addEventListener('keydown', event => {
               if (event.key === 'Enter' || event.key === ' ') openMap(event);
             });
