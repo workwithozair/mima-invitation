@@ -20,6 +20,11 @@
       setting: 'couple',
       alt: 'Masoom and Miza together',
     },
+    {
+      source: '4268230ee56c19cdcf94179a269e4006.png',
+      setting: 'location',
+      alt: 'Wedding venue location',
+    },
   ];
 
   fetch(new URL('data.json', document.baseURI), { cache: 'no-store' })

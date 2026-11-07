@@ -17,7 +17,7 @@
   toggle.className = 'background-music-toggle';
   toggle.setAttribute('aria-label', 'Pause background music');
   toggle.title = 'Pause background music';
-  toggle.textContent = '♫';
+  toggle.textContent = '🔇';
   toggle.hidden = false;
   toggle.style.cssText = 'position:fixed;right:18px;bottom:18px;z-index:20001;width:48px;height:48px;border:1px solid #929b83;border-radius:50%;background:#fffaf5;color:#41483d;box-shadow:0 3px 16px #0002;font:24px Georgia,serif;cursor:pointer';
   document.body.append(toggle);
@@ -26,6 +26,7 @@
     const label = playing ? 'Pause background music' : 'Play background music';
     toggle.setAttribute('aria-label', label);
     toggle.title = label;
+    toggle.textContent = playing ? '♫' : '🔇';
   };
 
   const startMusic = () => {
