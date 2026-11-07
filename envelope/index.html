@@ -43,6 +43,7 @@
   request.open("GET", new URL("data.json", document.baseURI).href, false);
   request.send(null);
   const data = JSON.parse(request.responseText);
+  window.weddingData = data;
   const couple = data.couple || {};
   const wedding = data.wedding || {};
   const ceremony = wedding.ceremony || {};
@@ -222,7 +223,7 @@ window['bootstrap'] = customizeCanvaBootstrap('{"base":{"A?":"B","L":false,"N":f
     },true);
     rsvp.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();location.assign(new URL('rsvp/index.html',document.baseURI).href);}});
   },150);
-})();</script><script>(function(){document.addEventListener('click',function(e){const a=document.querySelectorAll('a[href="#page-3"]')[2];if(!a)return;const r=a.getBoundingClientRect(),s=window.innerWidth/1280,left=r.left-260*s,right=r.right+300*s,top=r.top-520*s,bottom=r.bottom+330*s;if(e.clientX>=left&&e.clientX<=right&&e.clientY>=top&&e.clientY<=bottom){e.preventDefault();e.stopImmediatePropagation();location.assign('/our-story/index.html')}},true)})();</script><script src="assets/share.js" defer></script><script>
+})();</script><script>(function(){document.addEventListener('click',function(e){const a=document.querySelectorAll('a[href="#page-3"]')[2];if(!a)return;const r=a.getBoundingClientRect(),s=window.innerWidth/1280,left=r.left-260*s,right=r.right+300*s,top=r.top-520*s,bottom=r.bottom+330*s;if(e.clientX>=left&&e.clientX<=right&&e.clientY>=top&&e.clientY<=bottom){e.preventDefault();e.stopImmediatePropagation();location.assign('/our-story/index.html')}},true)})();</script><script src="assets/share.js" defer></script><script src="assets/background-music.js" defer></script><script>
 (async function(){
   try {
     if(window.__sageLocationCardInitialized)return;

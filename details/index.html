@@ -16,7 +16,7 @@
     h1{font-weight:400;font-size:clamp(42px,8vw,72px);line-height:1.05;margin:16px 0 10px}
     .subtitle{font-size:18px;color:var(--gold);margin:0}
     .city{margin:16px 0 0;font:11px Arial,sans-serif;letter-spacing:.13em;color:var(--muted)}
-    .events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:18px 0}
+    .events{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),440px));justify-content:center;gap:18px;width:100%;margin:18px auto}
     .event{padding:clamp(24px,4vw,38px);border:1px solid var(--line);background:#fffdf9e8;box-shadow:0 14px 44px #59614c12;display:flex;flex-direction:column;align-items:flex-start}
     .section-label{margin:0 0 13px}
     h2{font-size:clamp(27px,4vw,34px);font-weight:400;margin:0 0 22px}

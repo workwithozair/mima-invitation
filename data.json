@@ -129,8 +129,8 @@
     },
     "backgroundMusic": {
       "enabled": true,
-      "track": "[To confirm]",
-      "audioUrl": "[To confirm]",
+      "track": "wedding-nasheed.mp3",
+      "audioUrl": "assets/wedding-nasheed.mp3",
       "autoplay": false,
       "showMusicToggle": true
     },
@@ -144,7 +144,7 @@
     "flowerSpray": "assets/floral-spray.webp",
     "anthuriums": "assets/anthurium-pair.webp",
     "hand": "assets/IMG_2499.JPG",
-    "location": "assets/masjid-putra-location.svg",
+    "location": "assets/putra-masjid-1.jpeg",
     "couple": "assets/IMG_2244.JPG",
     "envelopeCover": "assets/IMG_2502.JPG",
     "engagement": "assets/IMG_2496.JPG",
@@ -155,7 +155,7 @@
   },
   "gallery": [
     {
-      "src": "assets/IMG_2244.JPG",
+      "src": "assets/putra-masjid-2.jpeg",
       "alt": "Miza and Masoom - Wedding Gallery 1",
       "caption": "[To confirm]"
     },
