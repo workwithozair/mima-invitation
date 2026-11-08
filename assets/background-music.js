@@ -1,7 +1,7 @@
 (function () {
   const music = window.weddingData?.design?.backgroundMusic || {
     enabled: true,
-    audioUrl: 'assets/wedding-nasheed.mp3',
+    audioUrl: 'assets/wedding-nashid.mp3',
     showMusicToggle: true
   };
   if (!music?.enabled || !music.audioUrl) return;

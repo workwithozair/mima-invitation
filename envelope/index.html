@@ -174,8 +174,15 @@ window['bootstrap'] = customizeCanvaBootstrap('{"base":{"A?":"B","L":false,"N":f
     const a=e.target.closest('a'); if(!a) return;
     const href=a.getAttribute('href')||'';
     const label=[a.innerText,a.textContent,a.getAttribute('aria-label'),a.getAttribute('title'),href].filter(Boolean).join(' ').toLowerCase();
+    const locationLabel=[...document.querySelectorAll('.a_GcMg')].find(node=>node.textContent.trim().toLowerCase()==='location');
+    if(href==='#page-2'&&locationLabel&&weddingData){const r=locationLabel.getBoundingClientRect(),nearLocation=Math.abs(e.clientX-(r.left+r.width/2))<125&&Math.abs(e.clientY-(r.top+r.height/2))<150;if(nearLocation){const map=weddingData.wedding?.ceremony?.mapsUrl||weddingData.wedding?.mapsUrl;if(map){e.preventDefault();e.stopImmediatePropagation();window.open(map,'_blank','noopener,noreferrer');return}}}
     if(href==='#page-2' || /details/i.test(label)){
-      e.preventDefault(); e.stopImmediatePropagation(); window.location.assign(new URL('details/index.html',document.baseURI).href); return;
+      const photo=[...document.querySelectorAll('img')].find(image=>image.currentSrc.includes('putra-masjid-1.jpeg')||image.src.includes('putra-masjid-1.jpeg')||/wedding venue location|masjid putra location/i.test(image.alt));
+      const rect=photo?.getBoundingClientRect();
+      if(rect&&e.clientX>=rect.left-12&&e.clientX<=rect.right+12&&e.clientY>=rect.top-12&&e.clientY<=rect.bottom+42){
+        e.preventDefault(); e.stopImmediatePropagation(); const d=weddingData; const map=d?.wedding?.ceremony?.mapsUrl||d?.wedding?.mapsUrl; if(map)window.open(map,'_blank','noopener,noreferrer'); return;
+      }
+      e.preventDefault(); e.stopImmediatePropagation(); window.location.assign(new URL('details/',document.baseURI).href); return;
     }
     if(href==='#page-3' || /our story|love story/i.test(label)){e.preventDefault();e.stopImmediatePropagation();window.location.assign(new URL('our-story/index.html',document.baseURI).href);return;}
     if(href.includes('docs.google.com/forms') || href==='#rsvp' || /rsvp/i.test(label)){
@@ -233,10 +240,10 @@ window['bootstrap'] = customizeCanvaBootstrap('{"base":{"A?":"B","L":false,"N":f
     const mapUrl=ceremony.mapsUrl||data.wedding?.mapsUrl;
     let attempts=0;
     const timer=setInterval(()=>{
-      const venuePhoto=document.querySelector('img[src*="4268230ee56c19cdcf94179a269e4006.png"]')||document.querySelector('img[alt="Masjid Putra location"]');
+      const venuePhoto=document.querySelector('img[src*="4268230ee56c19cdcf94179a269e4006.png"]')||document.querySelector('img[alt="Masjid Putra location"],img[alt="Wedding venue location"],img[src*="putra-masjid-1.jpeg"]');
       let locationLabel=[...document.querySelectorAll('.a_GcMg')].find(node=>node.textContent.trim().toLowerCase()==='location');
       const cardImages=[...document.querySelectorAll('img[src*="b5f17187e01fb0332e94b0fbea833ed6.png"]')];
-      if(!venuePhoto||!locationLabel||!cardImages.length){if(++attempts>100)clearInterval(timer);return;}
+      if(!venuePhoto||!locationLabel){if(++attempts>100)clearInterval(timer);return;}
       clearInterval(timer);
 
       venuePhoto.src=new URL((data.images?.location||'assets/masjid-putra-location.svg').replace(/^\//,''),document.baseURI).href;
@@ -259,7 +266,7 @@ window['bootstrap'] = customizeCanvaBootstrap('{"base":{"A?":"B","L":false,"N":f
           return !nearest||distance<nearest.distance?{image,distance}:nearest;
         },null).image;
       };
-      let cardImage=findCardImage(locationLabel);
+      let cardImage=findCardImage(locationLabel)||venuePhoto;
       const bindMapClick=element=>{
         if(!mapUrl||!element||element.dataset.mapClickBound==='true')return;
         element.dataset.mapClickBound='true';
@@ -271,6 +278,47 @@ window['bootstrap'] = customizeCanvaBootstrap('{"base":{"A?":"B","L":false,"N":f
         });
       };
       [cardImage,cardImage.parentElement,venuePhoto,venuePhoto.parentElement,locationLabel].forEach(bindMapClick);
+      if(mapUrl&&!window.__sageLocationCardAreaBound){
+        window.__sageLocationCardAreaBound=true;
+        const mapHitArea=document.createElement('a');
+        mapHitArea.href=mapUrl;
+        mapHitArea.target='_blank';
+        mapHitArea.rel='noopener noreferrer';
+        mapHitArea.setAttribute('aria-label',`Open map for ${ceremony.venue||'the wedding venue'}`);
+        mapHitArea.style.cssText='position:fixed;z-index:20000;display:block;background:transparent;cursor:pointer;text-decoration:none;';
+        document.body.append(mapHitArea);
+        const positionMapHitArea=()=>{
+          const label=locationLabel.getBoundingClientRect();
+          const scale=window.innerWidth/524;
+          const left=label.left-20*scale,top=label.top-138*scale;
+          mapHitArea.style.left=`${left}px`;
+          mapHitArea.style.top=`${top}px`;
+          mapHitArea.style.width=`${Math.max(label.width+48*scale,128*scale)}px`;
+          mapHitArea.style.height=`${Math.max(label.height+146*scale,154*scale)}px`;
+          mapHitArea.style.display=label.width&&label.height?'block':'none';
+        };
+        positionMapHitArea();
+        window.addEventListener('resize',positionMapHitArea);
+        window.addEventListener('scroll',positionMapHitArea,true);
+        const inLocationCard=(x,y)=>{
+          const photo=cardImage.getBoundingClientRect();
+          const label=locationLabel.getBoundingClientRect();
+          const left=Math.min(photo.left,label.left)-16;
+          const right=Math.max(photo.right,label.right)+16;
+          const top=Math.min(photo.top,label.top)-16;
+          const bottom=Math.max(photo.bottom,label.bottom)+16;
+          return photo.width>0&&photo.height>0&&x>=left&&x<=right&&y>=top&&y<=bottom;
+        };
+        document.addEventListener('click',event=>{
+          if(!inLocationCard(event.clientX,event.clientY))return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          window.open(mapUrl,'_blank','noopener,noreferrer');
+        },true);
+        document.addEventListener('pointermove',event=>{
+          document.documentElement.style.cursor=inLocationCard(event.clientX,event.clientY)?'pointer':'';
+        },true);
+      }
       if(locationLabel&&mapUrl){
         locationLabel.setAttribute('role','link');
         locationLabel.setAttribute('tabindex','0');
