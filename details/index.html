@@ -78,7 +78,6 @@
     const arrival=event.guestArrivalTime&&!event.guestArrivalTimeTentative?event.guestArrivalTime:event.guestArrivalTime?`${event.guestArrivalTime} (tentative)`:'';
     const extra=[
       event.guestArrivalTime?['Guest arrival',arrival]:null,
-      event.dressCode?['Dress code',event.dressCode]:null,
       event.guestColorTheme?['Guest colour theme',event.guestColorTheme]:null,
       event.parkingInstructions&&!event.parkingInstructions.startsWith('[')?['Parking',event.parkingInstructions]:null,
       event.instructions&&!event.instructions.startsWith('[')?['Notes',event.instructions]:null
